@@ -5,6 +5,8 @@
 1. configure signature store location in `/etc/containers/registries.d/fphammerle.yaml`:
 ```yaml
 docker:
+  docker.io/fphammerle:
+    sigstore: https://raw.githubusercontent.com/fphammerle/container-image-sigstore/master/docker.io
   quay.io/fphammerle:
     sigstore: https://raw.githubusercontent.com/fphammerle/container-image-sigstore/master/quay.io
 ```
@@ -25,14 +27,20 @@ $ gpg --export --armor --output /some/where/pgp/fphammerle 8D2902FE7DF47DDEDA280
   ],
   "transports": {
     "docker": {
+      "docker.io/fphammerle": [
+        {
+          "type": "signedBy",
+          "keyType": "GPGKeys",
+          "keyPath": "/tmp/fphammerle",
+          "signedIdentity": {"type": "matchRepoDigestOrExact"}
+        }
+      ],
       "quay.io/fphammerle": [
         {
           "type": "signedBy",
           "keyType": "GPGKeys",
-          "keyPath": "/some/where/pgp/fphammerle",
-          "signedIdentity": {
-            "type": "matchRepoDigestOrExact"
-          }
+          "keyPath": "/tmp/fphammerle",
+          "signedIdentity": {"type": "matchRepoDigestOrExact"}
         }
       ]
     }
@@ -44,8 +52,9 @@ $ gpg --export --armor --output /some/where/pgp/fphammerle 8D2902FE7DF47DDEDA280
 
 ```sh
 $ podman image trust show
-default             reject
-quay.io/fphammerle  signedBy  fabian@hammerle.me  https://raw.githubusercontent.com/fphammerle/container-image-sigstore/master/quay.io
+default               reject
+docker.io/fphammerle  signedBy  fabian@hammerle.me  https://raw.githubusercontent.com/fphammerle/container-image-sigstore/master/docker.io
+quay.io/fphammerle    signedBy  fabian@hammerle.me  https://raw.githubusercontent.com/fphammerle/container-image-sigstore/master/quay.io
 $ podman --log-level debug run --rm quay.io/fphammerle/systemctl-mqtt:0.5.0-amd64
 [...]
 DEBU[0000] Using registries.d directory /etc/containers/registries.d for sigstore configuration
