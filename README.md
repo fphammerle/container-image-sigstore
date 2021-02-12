@@ -31,7 +31,7 @@ $ gpg --export --armor --output /some/where/pgp/fphammerle 8D2902FE7DF47DDEDA280
         {
           "type": "signedBy",
           "keyType": "GPGKeys",
-          "keyPath": "/tmp/fphammerle",
+          "keyPath": "/some/where/pgp/fphammerle",
           "signedIdentity": {"type": "matchRepoDigestOrExact"}
         }
       ],
@@ -39,7 +39,7 @@ $ gpg --export --armor --output /some/where/pgp/fphammerle 8D2902FE7DF47DDEDA280
         {
           "type": "signedBy",
           "keyType": "GPGKeys",
-          "keyPath": "/tmp/fphammerle",
+          "keyPath": "/some/where/pgp/fphammerle",
           "signedIdentity": {"type": "matchRepoDigestOrExact"}
         }
       ]
